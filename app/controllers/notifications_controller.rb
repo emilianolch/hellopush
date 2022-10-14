@@ -9,13 +9,13 @@ class NotificationsController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { head :ok }
+      format.json { head :no_content }
     end
   end
 
   def send_message
     respond_to do |format|
-      format.html { redirect_to root_path }
+      format.html { head :no_content }
     end
   end
 end

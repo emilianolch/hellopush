@@ -71,3 +71,5 @@ group :test do
   gem "webdrivers"
 end
 gem "dotenv-rails", "~> 2.8"
+
+gem "webpush", "~> 1.1"

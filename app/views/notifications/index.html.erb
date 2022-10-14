@@ -4,6 +4,7 @@
 </header>
 <main>
   <%= form_tag '/notifications/send' do %>
+    <%= hidden_field_tag :endpoint, nil %>
     <%= submit_tag 'Notify me' %>
   <% end %>
 </main>

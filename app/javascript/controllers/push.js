@@ -1,4 +1,5 @@
 const key = document.querySelector("meta[name=vapid_public_key]").content;
+const endpointHiddenField = document.getElementById("endpoint");
 
 function subscribeUserToPush() {
   return navigator.serviceWorker
@@ -16,6 +17,7 @@ function subscribeUserToPush() {
         "Received PushSubscription: ",
         JSON.stringify(pushSubscription)
       );
+      endpointHiddenField.value = pushSubscription.endpoint;
       return pushSubscription;
     })
     .then(sendSubscriptionToBackEnd);
