@@ -12,4 +12,10 @@ class NotificationsController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  def send_message
+    respond_to do |format|
+      format.html { redirect_to root_path }
+    end
+  end
 end

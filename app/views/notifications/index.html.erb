@@ -1,1 +1,12 @@
-<h1>Rails Push Notifications Sample</h1>
+<header>
+  <h1>Hello push!</h1>
+  <p>A push notifications sample made with Ruby on Rails.</p>
+</header>
+<main>
+  <%= form_tag '/notifications/send' do %>
+    <%= submit_tag 'Notify me' %>
+  <% end %>
+</main>
+<footer>
+  <p>emilianolch</p>
+</footer>
