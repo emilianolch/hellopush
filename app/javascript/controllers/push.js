@@ -1,5 +1,4 @@
-const key =
-  "BP10vx0EjbYClAyHTX-Bv95jW-c-HacJxgLqd1ZcfLmAMsGd94fD5cgqi68dYMrGxSc_dzBvL6sN2XsPQTzB3tE";
+const key = document.querySelector("meta[name=vapid_public_key]").content;
 
 function subscribeUserToPush() {
   return navigator.serviceWorker
