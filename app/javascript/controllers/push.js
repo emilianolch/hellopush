@@ -17,7 +17,23 @@ function subscribeUserToPush() {
         JSON.stringify(pushSubscription)
       );
       return pushSubscription;
-    });
+    })
+    .then(sendSubscriptionToBackEnd);
+}
+
+function sendSubscriptionToBackEnd(subscription) {
+  return fetch("/notifications/save_subscription", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(subscription),
+  }).then(function (response) {
+    if (!response.ok) {
+      throw new Error("Bad status code from server.");
+    }
+    console.log("Subscription sent to backend server.");
+  });
 }
 
 export const push = {

@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
   root 'notifications#index'
-
-  resources :notifications, only: :index
+  post 'notifications/save_subscription', to: 'notifications#save_subscription'
 end
