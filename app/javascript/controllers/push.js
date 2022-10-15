@@ -1,41 +1,50 @@
 const key = document.querySelector("meta[name=vapid_public_key]").content;
-const endpointHiddenField = document.getElementById("endpoint");
+const endpointField = document.getElementById("endpoint");
 
-function subscribeUserToPush() {
-  return navigator.serviceWorker
-    .register("/service-worker.js")
-    .then(function (registration) {
-      const subscribeOptions = {
-        userVisibleOnly: true,
-        applicationServerKey: key,
-      };
+async function registerServiceWorker() {
+  const registration = await navigator.serviceWorker.register(
+    "/service-worker.js"
+  );
+  const serviceWorker =
+    registration.installing || registration.waiting || registration.active;
 
-      return registration.pushManager.subscribe(subscribeOptions);
-    })
-    .then(function (pushSubscription) {
-      console.log(
-        "Received PushSubscription: ",
-        JSON.stringify(pushSubscription)
-      );
-      endpointHiddenField.value = pushSubscription.endpoint;
-      return pushSubscription;
-    })
-    .then(sendSubscriptionToBackEnd);
+  console.log("Service worker registered.");
+
+  if (serviceWorker.state === "activated") {
+    return registration;
+  }
+
+  return new Promise((resolve) => {
+    serviceWorker.addEventListener("statechange", (event) => {
+      if (event.target.state === "activated") {
+        resolve(registration);
+      }
+    });
+  });
 }
 
-function sendSubscriptionToBackEnd(subscription) {
-  return fetch("/notifications/save_subscription", {
+async function subscribeUserToPush(registration) {
+  const subscription = await registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: key,
+  });
+  console.log("Received PushSubscription: ", JSON.stringify(subscription));
+  endpointField.value = subscription.endpoint;
+  return subscription;
+}
+
+async function sendSubscriptionToBackEnd(subscription) {
+  const response = await fetch("/notifications/save_subscription", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(subscription),
-  }).then(function (response) {
-    if (!response.ok) {
-      throw new Error("Bad status code from server.");
-    }
-    console.log("Subscription sent to backend server.");
   });
+  if (!response.ok) {
+    throw new Error("Bad status code from server.");
+  }
+  console.log("Subscription sent to backend server.");
 }
 
 export const push = {
@@ -45,12 +54,18 @@ export const push = {
       return;
     }
 
-    Notification.requestPermission().then((permissionResult) => {
-      if (permissionResult !== "granted") {
-        console.log("We weren't granted permission to send notifications.");
-        return;
-      }
-      subscribeUserToPush();
-    });
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") {
+      console.log("We weren't granted permission to send notifications.");
+      return;
+    }
+
+    try {
+      const registration = await registerServiceWorker();
+      const subscription = await subscribeUserToPush(registration);
+      await sendSubscriptionToBackEnd(subscription);
+    } catch (err) {
+      console.error(err.message);
+    }
   },
 };
