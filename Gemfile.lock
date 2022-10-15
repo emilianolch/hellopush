@@ -1,11 +1,3 @@
-GIT
-  remote: https://github.com/ClearlyClaire/webpush.git
-  revision: 061ff9a88efebe2403a2a1c0dd0b66b96483ae9a
-  specs:
-    webpush (1.1.0)
-      hkdf (~> 0.2)
-      jwt (~> 2.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -217,6 +209,9 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (~> 4.0)
+    webpush (1.1.0)
+      hkdf (~> 0.2)
+      jwt (~> 2.0)
     websocket (1.2.9)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -249,7 +244,7 @@ DEPENDENCIES
   tzinfo-data
   web-console
   webdrivers
-  webpush (~> 1.1)!
+  webpush (~> 1.1)
 
 RUBY VERSION
    ruby 3.1.0p0
