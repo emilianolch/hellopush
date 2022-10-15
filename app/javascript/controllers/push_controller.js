@@ -5,9 +5,15 @@ export default class extends Controller {
   static values = {
     vapidPublicKey: String,
   };
-  static targets = ["endpointField", "sendButton"];
+  static targets = ["endpointField", "sendButton", "messages"];
 
-  connect() {
+  async subscribe(event) {
+    event.preventDefault();
+
+    const log = (message) => {
+      this.messagesTarget.textContent += `${message}\n`;
+    };
+
     const registerServiceWorker = async () => {
       const registration = await navigator.serviceWorker.register(
         "/service-worker.js"
@@ -16,12 +22,14 @@ export default class extends Controller {
         registration.installing || registration.waiting || registration.active;
 
       if (serviceWorker.state === "activated") {
+        log("Service worker registered and activated");
         return registration;
       }
 
       return new Promise((resolve) => {
         serviceWorker.addEventListener("statechange", (event) => {
           if (event.target.state === "activated") {
+            log("Service worker registered and activated");
             resolve(registration);
           }
         });
@@ -33,6 +41,7 @@ export default class extends Controller {
         userVisibleOnly: true,
         applicationServerKey: this.vapidPublicKeyValue,
       });
+      log("Received subscription from push service");
       return subscription;
     };
 
@@ -47,8 +56,14 @@ export default class extends Controller {
       if (!response.ok) {
         throw new Error("Bad status code from server.");
       }
+      log("Subscription sent to backend server");
       return subscription;
     };
+
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") {
+      return log("We weren't granted permission");
+    }
 
     registerServiceWorker()
       .then(subscribeUserToPush)

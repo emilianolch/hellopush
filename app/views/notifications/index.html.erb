@@ -5,9 +5,10 @@
 <main data-controller="push" data-push-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>">
   <%= form_tag '/notifications/send' do %>
     <%= hidden_field_tag :endpoint, nil, data: { 'push-target': 'endpointField' } %>
-    <%= submit_tag 'Notify me', disabled: true , data: { 'push-target': 'sendButton' } %>
+    <button data-action="push#subscribe">Activate notifications</button>
+    <button data-push-target="sendButton", disabled="true">Notify me</button>
   <% end %>
-  <pre id="messages">
+  <pre id="messages", data-push-target="messages">
 </pre>
 </main>
 <footer>
