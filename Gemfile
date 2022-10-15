@@ -71,7 +71,7 @@ group :test do
 end
 gem "dotenv-rails", "~> 2.8"
 
-gem "webpush", "~> 1.1"
+gem "webpush", "~> 1.1", git: 'https://github.com/ClearlyClaire/webpush.git'
 
 gem "fortune_gem", "~> 0.0.9"
 

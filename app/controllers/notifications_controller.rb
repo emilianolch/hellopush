@@ -42,8 +42,8 @@ class NotificationsController < ApplicationController
           read_timeout: 5
         )
         render turbo_stream: turbo_stream.append('messages', "Message sent at #{Time.now}\n")
-        # rescue StandardError => e
-        #   render turbo_stream: turbo_stream.append('messages', "#{e.message}\n")
+      rescue StandardError => e
+        render turbo_stream: turbo_stream.append('messages', "#{e.message}\n")
       end
     end
   end
