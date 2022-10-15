@@ -2,10 +2,10 @@
   <h1>Hello push!</h1>
   <p>A push notifications sample made with Ruby on Rails.</p>
 </header>
-<main>
+<main data-controller="push" data-push-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>">
   <%= form_tag '/notifications/send' do %>
-    <%= hidden_field_tag :endpoint, nil %>
-    <%= submit_tag 'Notify me' %>
+    <%= hidden_field_tag :endpoint, nil, data: { 'push-target': 'endpointField' } %>
+    <%= submit_tag 'Notify me', disabled: true , data: { 'push-target': 'sendButton' } %>
   <% end %>
   <pre id="messages">
 </pre>
