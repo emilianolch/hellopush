@@ -61,9 +61,9 @@ export const push = {
     }
 
     try {
-      const registration = await registerServiceWorker();
-      const subscription = await subscribeUserToPush(registration);
-      await sendSubscriptionToBackEnd(subscription);
+      registerServiceWorker()
+        .then(subscribeUserToPush)
+        .then(sendSubscriptionToBackEnd);
     } catch (err) {
       console.error(err.message);
     }
