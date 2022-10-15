@@ -15,8 +15,8 @@ class NotificationsController < ApplicationController
 
   def send_message
     message = {
-      title: 'Hello push',
-      body: 'Hello world!'
+      title: 'Hello push!',
+      body: FortuneGem.give_fortune(max_length: 100)
     }
 
     respond_to do |format|

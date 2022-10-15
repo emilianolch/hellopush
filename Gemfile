@@ -73,3 +73,5 @@ end
 gem "dotenv-rails", "~> 2.8"
 
 gem "webpush", "~> 1.1"
+
+gem "fortune_gem", "~> 0.0.9"
