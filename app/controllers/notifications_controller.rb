@@ -16,7 +16,8 @@ class NotificationsController < ApplicationController
   def send_message
     message = {
       title: 'Hello push!',
-      body: FortuneGem.give_fortune(max_length: 100)
+      body: FortuneGem.give_fortune(max_length: 100),
+      icon: ActionController::Base.helpers.image_path('rails.png')
     }
 
     respond_to do |format|
@@ -30,7 +31,8 @@ class NotificationsController < ApplicationController
           vapid: {
             subject: 'mailto:sender@example.com',
             public_key: ENV['VAPID_PUBLIC_KEY'],
-            private_key: ENV['VAPID_PRIVATE_KEY']
+            private_key: ENV['VAPID_PRIVATE_KEY'],
+            expiration: 12 * 60 * 60
           },
           ssl_timeout: 5, # value for Net::HTTP#ssl_timeout=, optional
           open_timeout: 5, # value for Net::HTTP#open_timeout=, optional
