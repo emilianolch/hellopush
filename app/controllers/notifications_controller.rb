@@ -17,7 +17,9 @@ class NotificationsController < ApplicationController
     message = {
       title: 'Hello push!',
       body: FortuneGem.give_fortune(max_length: 100),
-      icon: ActionController::Base.helpers.image_path('rails.png')
+      icon: ActionController::Base.helpers.image_path('rails.png'),
+      tag: 'default-tag',
+      url: root_url
     }
 
     respond_to do |format|
@@ -28,15 +30,16 @@ class NotificationsController < ApplicationController
           endpoint: subscriber.endpoint,
           p256dh: subscriber.p256dh,
           auth: subscriber.auth,
+
           vapid: {
             subject: 'mailto:sender@example.com',
             public_key: ENV['VAPID_PUBLIC_KEY'],
             private_key: ENV['VAPID_PRIVATE_KEY'],
             expiration: 12 * 60 * 60
           },
-          ssl_timeout: 5, # value for Net::HTTP#ssl_timeout=, optional
-          open_timeout: 5, # value for Net::HTTP#open_timeout=, optional
-          read_timeout: 5 # value for Net::HTTP#read_timeout=, optional
+          ssl_timeout: 5,
+          open_timeout: 5,
+          read_timeout: 5
         )
         render turbo_stream: turbo_stream.append('messages', "Message sent at #{Time.now}\n")
       rescue StandardError => e

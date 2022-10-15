@@ -4,6 +4,10 @@ self.addEventListener("push", function (event) {
     self.registration.showNotification(message.title, {
       body: message.body,
       icon: message.icon,
+      tag: message.tag,
+      data: {
+        url: message.url,
+      },
     })
   );
 });
