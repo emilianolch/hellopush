@@ -16,10 +16,15 @@ class NotificationsController < ApplicationController
   def send_message
     message = {
       title: 'Hello push!',
-      body: FortuneGem.give_fortune(max_length: 100),
-      icon: ActionController::Base.helpers.image_path('rails.png'),
-      tag: 'default-tag',
-      url: root_url
+      options: {
+        body: FortuneGem.give_fortune(max_length: 100),
+        icon: ActionController::Base.helpers.image_path('rails.png'),
+        tag: 'default-tag',
+        renotify: true
+      },
+      data: {
+        url: root_url
+      }
     }
 
     respond_to do |format|
