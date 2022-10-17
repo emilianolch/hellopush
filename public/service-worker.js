@@ -6,6 +6,7 @@ self.addEventListener("push", (event) => {
 });
 
 self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
   event.waitUntil(
     (async () => {
       const allClients = await clients.matchAll({
