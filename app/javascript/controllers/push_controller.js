@@ -42,6 +42,7 @@ export default class extends Controller {
         applicationServerKey: this.vapidPublicKeyValue,
       });
       log("Received subscription from push service");
+      log(`Endpoint: ${subscription.endpoint}`);
       return subscription;
     };
 
