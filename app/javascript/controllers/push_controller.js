@@ -60,6 +60,10 @@ export default class extends Controller {
       return subscription;
     };
 
+    if (!("serviceWorker" in navigator && "PushManager" in window)) {
+      return log("Sorry, push notifications are not supported on this browser");
+    }
+
     const permission = await Notification.requestPermission();
     if (permission !== "granted") {
       return log("We weren't granted permission");
